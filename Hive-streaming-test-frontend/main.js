@@ -1,14 +1,16 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron')
 const path = require('node:path')
 //const url = require("url");
 
-let win;
+let win, cpuUsage = 0;
 
-module.exports = function getCPUusage() {
+/* module.exports =  */function handleCPUusage() {
+ /*  let cpuUsage = 0;
   //const cpu = process.getCPUUsage();
-  setInterval(() => this.value = console.log(process.getCPUUsage().percentCPUUsage), 10000);
+  setInterval(() => cpuUsage =  */
   //console.log("cpu",cpu);
+  return process.getCPUUsage().percentCPUUsage;
 }
 
 function createWindow () {
@@ -17,6 +19,9 @@ function createWindow () {
       width: 1000,
       height: 600,
       webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
         preload: path.join(__dirname, 'preload.js')
       }
     })
@@ -32,6 +37,8 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+    // ipcMain.handle('getCPUusage', handleCPUusage)
+
     createWindow();
   
     app.on("activate", function () {
@@ -40,26 +47,12 @@ app.whenReady().then(() => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 
-    getCPUusage();
+    /* setInterval(() => {
+      this.cpuUsage = process.getCPUUsage().percentCPUUsage;
+      console.log(this.cpuUsage);
+    }, 10000); */
+    //console.log(this.cpuUsage);
 });
-
-
-/* function createWindow() {
-  win = new BrowserWindow({ width: 800, height: 600 });
-  // load the dist folder from Angular
-  win.loadURL(
-    url.format({
-      pathname: path.join(__dirname, "/src/index.html"),
-      protocol: "file:",
-      slashes: true
-    })
-  );
-  // The following is optional and will open the DevTools:
-  // win.webContents.openDevTools()
-  win.on("closed", () => {
-    win = null;
-  });
-} */
 
 
 /* app.on("ready", createWindow);
@@ -69,4 +62,17 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+/* ipcMain.on('getCPUusage', (event, args) => {
+  event.reply('getCPUusageResponse', {
+      data: [
+          {
+              cpuUsage: process.getCPUUsage().percentCPUUsage
+          }
+      ]
+  });
+}); */
+ipcMain.on('ping', (event) => {
+  event.sender.send('pong');
 });

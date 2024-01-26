@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { SocketsService } from '../sockets.service';
+import { CpuUsageService } from '../cpu-usage.service'
 import { ConnectionData, User } from '../utils';
-import { NgFor } from '@angular/common';
-import {CPUUsage} from 'electron'
+import { NgFor, DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-client',
@@ -13,7 +13,21 @@ import {CPUUsage} from 'electron'
 })
 export class ClientComponent {
 
-  constructor() {}
+  window: any;
+
+  /* constructor(@Inject(DOCUMENT) private document: Document) {
+    this.window = document.defaultView;
+
+
+    const cpuUsageService = new CpuUsageService();
+  } */
+  constructor(private readonly _ipc: CpuUsageService) {
+    this._ipc.on('pong', (event: Electron.IpcMessageEvent) => {
+      console.log('pong');
+    });
+
+    this._ipc.send('ping');
+  }
 
   userList: Array<User> = [];
   user = {room: "1234", email: "client@example.com"};
@@ -31,7 +45,7 @@ export class ClientComponent {
 
   onConnect() : void {
     console.log("connect")
-    const socketService = new SocketsService;
+    /* const socketService = new SocketsService;
 
     socketService.joinNetwork(this.user);
     //this.userList = socketService.getConnectedUsers();
@@ -39,7 +53,15 @@ export class ClientComponent {
       this.userList = users.users;
     });
     console.log("service users ", this.userList);
-    //this.socketService.disconnectFromNetwork();
+    //this.socketService.disconnectFromNetwork(); */
+
+    
+
+    /* setInterval(() => {
+      console.log(cpuUsageService.getCPUusage());
+    }, 5000); */
+
+    
   }
 
   /* disconnect = false;
