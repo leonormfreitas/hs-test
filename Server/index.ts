@@ -1,9 +1,10 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, json } from "express";
 import dotenv from "dotenv";
 import { Server, Socket } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 import mongoose from "mongoose";
+import router from './routes/index';
 
 interface User {
     id: string;
@@ -19,27 +20,21 @@ users.set("1234", [{ id: "fictional", email: "fictional@email" }])
 dotenv.config();
 
 const app: Express = express();
+app.use(express.json());
+app.use('/', router());
 const port = process.env.PORT || 4000;
 
-/* app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-}); */
-
-
-
-/* app.use(cors({
+app.use(cors({
     credentials: true,
     origin: '*'
-  })); */
-
-  //app.use(bodyParser.json());
+}));
   
-  const server = createServer(app);
-  const io = new Server(server, {
-    cors: {
-      origin: '*',
-      methods: ['GET', 'POST']
-    }
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
 });
 
 //simmulation of a signaling server for a P2P application 
@@ -107,5 +102,6 @@ const mongodbUri = process.env.MONGO_URI || "";
 
 mongoose.Promise = Promise;
 mongoose.connect(mongodbUri);
+mongoose.connection.on('connection', () => console.log("Connected"));
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
