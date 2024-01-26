@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'Satoshi-Variable';
+    src: url('./assets/Satoshi-Variable.woff2') format('woff2'),
+         url('./assets/Satoshi-Variable.woff') format('woff'),
+         url('./assets/Satoshi-Variable.ttf') format('truetype');
+         font-weight: 300 900;
+         font-display: swap;
+         font-style: normal;
+}
+
+:root {
+    --antiflash-white: #F0F1F1ff;
+    --white-smoke: rgb(232, 232, 230);
+    --castleton-green: #00614Dff;
+    --connected-green: rgb(15, 109, 68);
+    --lavender-web: #D4E2F5ff;
+    --lavender-web-dark: rgb(161, 184, 217);
+    --lavender-web-light: rgb(233, 238, 246);
+    --smoky-black: #0E0A08ff;
+    --timberwolf: #E4DBD2ff;
+    --light-salmon: rgb(246, 83, 83);
+    --celadon: rgb(224, 246, 240);
+  
+    font-family: 'Satoshi-Variable';
+    background-color: var(--white-smoke);
+}
+
+button {
+    background-color: var(--lavender-web);
+    border: 1px solid var(--smoky-black);
+    border-radius: 20px;
+    font-size: 1.2em;
+    padding: 0.2em 0.5em;
+}
+
+button:hover {
+    background-color: var(--lavender-web-dark);
+}

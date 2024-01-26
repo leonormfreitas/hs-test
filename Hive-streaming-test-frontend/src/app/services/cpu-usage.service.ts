@@ -8,10 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class CpuUsageService {
 
-  private _ipc: IpcRenderer | undefined;
+  //private _ipc: IpcRenderer | undefined;
 
   constructor() {
-    if (window.require) {
+   /*  if (window.require) {
       try {
         this._ipc = window.require('electron').ipcRenderer;
       } catch (e) {
@@ -19,11 +19,14 @@ export class CpuUsageService {
       }
     } else {
       console.warn('Electron\'s IPC was not loaded');
-    }
-    
+    } */
   }
 
-   public on(channel: string, listener: any): void {
+  getCPUusage() {
+    return String(Math.random() * (0.9 - 0.05) + 0.05);
+  }
+
+   /* public on(channel: string, listener: any): void {
     if (!this._ipc) {
       return;
     }
@@ -36,7 +39,7 @@ export class CpuUsageService {
     }
     this._ipc.send(channel, ...args);
   }
-
+ */
 /*   getCPUusage() {
     return new Observable<any>(observer => {
       this.ipc.once('getCPUusageResponse', (event, arg) => {

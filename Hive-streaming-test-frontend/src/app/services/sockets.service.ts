@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { ConnectionData, User } from './utils';
+import { ConnectionData, User } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +32,10 @@ export class SocketsService {
   }
 
   disconnectFromNetwork() {
-    //this.socket.emit("disconnect_user");
+    console.log("disconnect service", this.socket.id);
+    //this.socket.emit("disconnect");
     this.socket.disconnect();
-    //wouldn't be necessary in a real p2p connection, disconnect would happen after data exchange through WebRTC
+    //in a real p2p connection, disconnect would happen after data exchange through WebRTC
 
   }
 

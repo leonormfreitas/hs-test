@@ -51,7 +51,8 @@ io.on("connection", (socket: Socket) => {
                 return;
             }
             const user = { id: socket.id, email: data.email };
-            users.get(data.room)!.push(user);
+            if(users.get(data.room)!.find((usr) => usr.email === user.email) === undefined)
+                users.get(data.room)!.push(user);
             console.log("Modified array of users", users.get(data.room)!)
         } else {
             users.set(data.room, [{ id: socket.id, email: data.email }]);

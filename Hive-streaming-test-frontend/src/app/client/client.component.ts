@@ -1,38 +1,45 @@
 import { Component, Inject } from '@angular/core';
-import { SocketsService } from '../sockets.service';
-import { CpuUsageService } from '../cpu-usage.service'
+import { SocketsService } from '../services/sockets.service';
+import { CpuUsageService } from '../services/cpu-usage.service'
 import { ConnectionData, User } from '../utils';
-import { NgFor, DOCUMENT } from '@angular/common';
+import { NgFor, NgIf, DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [NgFor,],
+  imports: [NgFor, NgIf],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css'
 })
 export class ClientComponent {
 
-  window: any;
+  //window: any;
 
   /* constructor(@Inject(DOCUMENT) private document: Document) {
     this.window = document.defaultView;
 
 
-    const cpuUsageService = new CpuUsageService();
+    
   } */
-  constructor(private readonly _ipc: CpuUsageService) {
-    this._ipc.on('pong', (event: Electron.IpcMessageEvent) => {
+  /*constructor( private readonly _ipc: CpuUsageService ) {
+    /* this._ipc.on('pong', (event: Electron.IpcMessageEvent) => {
       console.log('pong');
     });
 
-    this._ipc.send('ping');
+    this._ipc.send('ping'); 
+  }*/
+
+  constructor() {
+  
   }
+
+  cpuUsageService = new CpuUsageService();
+  currentCPUusage: string = "";
 
   userList: Array<User> = [];
   user = {room: "1234", email: "client@example.com"};
 
-
+  connected: boolean = false;
 
   /*disconnectNetwork(): void {
     this.socketService.disconnectFromNetwork();
@@ -40,29 +47,37 @@ export class ClientComponent {
  */
   ngOnInit(): void {
     console.log("Started ");
-    // const cpu: CPUUsage = 
   }
 
   onConnect() : void {
     console.log("connect")
-    /* const socketService = new SocketsService;
+    const socketService = new SocketsService;
 
-    socketService.joinNetwork(this.user);
-    //this.userList = socketService.getConnectedUsers();
-    socketService.getConnectedUsers().subscribe((users) => {
-      this.userList = users.users;
-    });
-    console.log("service users ", this.userList);
-    //this.socketService.disconnectFromNetwork(); */
+    if(this.connected){
+      console.log("disconnect")
+      this.connected = false;
+      socketService.disconnectFromNetwork();
+    }
+    else{
+      socketService.joinNetwork(this.user);
+      this.connected = true
+      //this.userList = socketService.getConnectedUsers();
+      socketService.getConnectedUsers().subscribe((users) => {
+        this.userList = users.users;
+      });
+      console.log("service users ", this.userList);
+      //this.socketService.disconnectFromNetwork();
 
-    
+    }
 
-    /* setInterval(() => {
-      console.log(cpuUsageService.getCPUusage());
-    }, 5000); */
-
+    setInterval(() => {
+      this.currentCPUusage = String(Math.round(Number(this.cpuUsageService.getCPUusage())*100))
+      console.log("cpuUsage",this.currentCPUusage);
+    }, 5000);
     
   }
+
+  
 
   /* disconnect = false;
 

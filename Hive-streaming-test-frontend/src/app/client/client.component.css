@@ -1,0 +1,19 @@
+.user-pannel{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.connected {
+    color: var(--connected-green);
+    font-size: 1.2em;
+}
+
+.connected-list {
+    list-style-type: none;
+}
+
+.connected-list button {
+    font-size: 0.8em;
+    margin-left: 1em;
+}
