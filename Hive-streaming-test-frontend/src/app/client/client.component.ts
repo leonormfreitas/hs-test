@@ -1,13 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { SocketsService } from '../services/sockets.service';
 import { CpuUsageService } from '../services/cpu-usage.service'
-import { ConnectionData, User } from '../utils';
-import { NgFor, NgIf, DOCUMENT } from '@angular/common';
+import { ConnectionData, CpuUsageData, User } from '../utils';
+import { NgFor, NgIf, DOCUMENT, DatePipe } from '@angular/common';
+import { RequestsService } from '../services/requests.service';
 
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, DatePipe],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css'
 })
@@ -29,11 +30,12 @@ export class ClientComponent {
     this._ipc.send('ping'); 
   }*/
 
-  constructor() {
+  constructor(private cpuUsageRequests: RequestsService, private datePipe: DatePipe) {
   
   }
 
   cpuUsageService = new CpuUsageService();
+  
   currentCPUusage: string = "";
 
   userList: Array<User> = [];
@@ -73,18 +75,20 @@ export class ClientComponent {
     setInterval(() => {
       this.currentCPUusage = String(Math.round(Number(this.cpuUsageService.getCPUusage())*100))
       console.log("cpuUsage",this.currentCPUusage);
-    }, 5000);
+
+      //const currentDateAndTime: Date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+
+      const newMeas: CpuUsageData = {client: this.user.email,
+        cpuUsage: this.currentCPUusage,
+        timestamp: new Date("2024-01-12 07:12:34"),
+        room: this.user.room
+      }
+
+      this.cpuUsageRequests
+          .addCPUMeasure(newMeas)
+          .subscribe(measr => console.log(measr));
+    }, 60000);
     
   }
-
-  
-
-  /* disconnect = false;
-
-  onSubmit() { 
-    this.disconnectNetwork()
-    this.disconnect = true;
-    
-   } */
 
 }

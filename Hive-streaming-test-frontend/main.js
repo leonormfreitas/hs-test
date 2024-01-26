@@ -3,15 +3,6 @@ const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron')
 const path = require('node:path')
 //const url = require("url");
 
-let win, cpuUsage = 0;
-
-/* module.exports =  */function handleCPUusage() {
- /*  let cpuUsage = 0;
-  //const cpu = process.getCPUUsage();
-  setInterval(() => cpuUsage =  */
-  //console.log("cpu",cpu);
-  return process.getCPUUsage().percentCPUUsage;
-}
 
 function createWindow () {
     // Create the browser window.
@@ -51,7 +42,6 @@ app.whenReady().then(() => {
       this.cpuUsage = process.getCPUUsage().percentCPUUsage;
       console.log(this.cpuUsage);
     }, 10000); */
-    //console.log(this.cpuUsage);
 });
 
 
@@ -73,6 +63,6 @@ app.on("window-all-closed", () => {
       ]
   });
 }); */
-ipcMain.on('ping', (event) => {
+/* ipcMain.on('ping', (event) => {
   event.sender.send('pong');
-});
+}); */
