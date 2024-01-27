@@ -25,8 +25,7 @@ app.use('/', router());
 const port = process.env.PORT || 4000;
 
 app.use(cors({
-    credentials: true,
-    origin: '*'
+    origin: '*',
 }));
   
 const server = createServer(app);

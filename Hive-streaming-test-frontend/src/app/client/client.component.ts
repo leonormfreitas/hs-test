@@ -2,13 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { SocketsService } from '../services/sockets.service';
 import { CpuUsageService } from '../services/cpu-usage.service'
 import { ConnectionData, CpuUsageData, User } from '../utils';
-import { NgFor, NgIf, DOCUMENT, DatePipe } from '@angular/common';
+import { NgFor, NgIf, DOCUMENT } from '@angular/common';
 import { RequestsService } from '../services/requests.service';
 
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [NgFor, NgIf, DatePipe],
+  imports: [NgFor, NgIf],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css'
 })
@@ -18,8 +18,6 @@ export class ClientComponent {
 
   /* constructor(@Inject(DOCUMENT) private document: Document) {
     this.window = document.defaultView;
-
-
     
   } */
   /*constructor( private readonly _ipc: CpuUsageService ) {
@@ -30,13 +28,11 @@ export class ClientComponent {
     this._ipc.send('ping'); 
   }*/
 
-  constructor(private cpuUsageRequests: RequestsService, private datePipe: DatePipe) {
-  
-  }
+  constructor(private cpuUsageRequests: RequestsService/* , private datePipe: DatePipe */) {}
 
   cpuUsageService = new CpuUsageService();
   
-  currentCPUusage: string = "";
+  currentCPUusage: string = "0";
 
   userList: Array<User> = [];
   user = {room: "1234", email: "client@example.com"};
@@ -87,7 +83,7 @@ export class ClientComponent {
       this.cpuUsageRequests
           .addCPUMeasure(newMeas)
           .subscribe(measr => console.log(measr));
-    }, 60000);
+    }, 1000);
     
   }
 

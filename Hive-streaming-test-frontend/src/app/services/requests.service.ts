@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CpuUsageData } from '../utils';
 import { Observable, catchError, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { error } from 'console';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +25,18 @@ export class RequestsService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
+   httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      /* Authorization: 'my-auth-token' */
+    })
+  };
+
 
   /** POST: add a new CPU Measure to the database */
   addCPUMeasure(data: CpuUsageData): Observable<CpuUsageData> {
-    return this.http.post<CpuUsageData>('hhttp://localhost:4000/clientCPU/new', data)
+    console.log("POST DATA", data);
+    return this.http.post<CpuUsageData>('hhttp://localhost:4000/clientCPU/new', data, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

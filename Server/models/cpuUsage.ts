@@ -21,8 +21,7 @@ const ClientCPUSchema = new mongoose.Schema({
 
 export const clientCPUModel = mongoose.model('ClientCPU', ClientCPUSchema);
 
-export const getClientsCPUs = () => {
-    console.log('hello inside')
-    return clientCPUModel.find();
-}
+export const getClientsCPUs = () => clientCPUModel.find();
 
+export const createClientMeasure = (values: Record<string, any>) => new clientCPUModel(values)
+    .save().then(clientCPU => clientCPU.toObject());
