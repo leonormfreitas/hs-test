@@ -1,4 +1,4 @@
-#Hive Streaming Test
+# Hive Streaming Test
 
 In order to build the component that measures CPU Usage in a File sharing client, Angular+Electron were used to create a desktop app. 
 I decided to implement what would work as a signalling server in a P2P system, using Node+Express+Typescript and Websockets, to which each client would connect to and would be able to see other users connected as well. After connecting the CPU usage would be measured.
