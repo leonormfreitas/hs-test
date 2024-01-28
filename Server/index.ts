@@ -21,12 +21,14 @@ dotenv.config();
 
 const app: Express = express();
 app.use(express.json());
+//app.options('*', cors())
 app.use('/', router());
 const port = process.env.PORT || 4000;
 
 app.use(cors({
     origin: '*',
 }));
+
   
 const server = createServer(app);
 const io = new Server(server, {

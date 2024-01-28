@@ -1,7 +1,7 @@
 <div class="user-pannel">
     <h2 *ngIf="!connected">Hi! Do you want to connect to share files? </h2>
     <button *ngIf="!connected" (click)="onConnect()">Connect</button>
-    <h2 *ngIf="connected">Hi there! You're now connected using the email {{user.email}}. <button (click)="onConnect()">Disconnect?</button></h2>
+    <h2 *ngIf="connected">Hi there! You're now connected using the email {{user.email}}.</h2><button  *ngIf="connected" (click)="onConnect()">Disconnect</button>
     <h3 *ngIf="connected">Other users that are also connected <span class="connected">⦿</span> </h3>
     <ul *ngIf="connected" class="connected-list">
         <li *ngFor="let user of userList">

@@ -28,7 +28,7 @@ export default (router: Router) => {
                 timestamp, 
                 room
             });
-            res.set("Access-Control-Allow-Origin", "http://localhost:4200"); 
+            // res.set("Access-Control-Allow-Origin", "http://localhost:4200"); 
             return res.status(200).json(clientCPUs)
         } catch (error) {
             console.log(error);

@@ -50,11 +50,13 @@ export class ClientComponent {
   onConnect() : void {
     console.log("connect")
     const socketService = new SocketsService;
+    let interval;
 
     if(this.connected){
       console.log("disconnect")
       this.connected = false;
       socketService.disconnectFromNetwork();
+      clearInterval(interval);
     }
     else{
       socketService.joinNetwork(this.user);
@@ -66,24 +68,24 @@ export class ClientComponent {
       console.log("service users ", this.userList);
       //this.socketService.disconnectFromNetwork();
 
+      interval = setInterval(() => {
+        this.currentCPUusage = String(Math.round(Number(this.cpuUsageService.getCPUusage())*100))
+        console.log("cpuUsage",this.currentCPUusage);
+  
+        //const currentDateAndTime: Date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+  
+        const newMeas: CpuUsageData = {client: this.user.email,
+          cpuUsage: this.currentCPUusage,
+          timestamp: new Date("2024-01-12 07:12:34"),
+          room: this.user.room
+        }
+  
+        this.cpuUsageRequests.addCPUMeasure(newMeas);
+      }, 1000);
+
     }
 
-    setInterval(() => {
-      this.currentCPUusage = String(Math.round(Number(this.cpuUsageService.getCPUusage())*100))
-      console.log("cpuUsage",this.currentCPUusage);
-
-      //const currentDateAndTime: Date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
-
-      const newMeas: CpuUsageData = {client: this.user.email,
-        cpuUsage: this.currentCPUusage,
-        timestamp: new Date("2024-01-12 07:12:34"),
-        room: this.user.room
-      }
-
-      this.cpuUsageRequests
-          .addCPUMeasure(newMeas)
-          .subscribe(measr => console.log(measr));
-    }, 1000);
+    
     
   }
 

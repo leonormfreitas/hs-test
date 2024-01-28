@@ -27,18 +27,21 @@ export class RequestsService {
 
    httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      /* Authorization: 'my-auth-token' */
+      'Content-Type':  'application/json'/* ,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With" */
     })
   };
 
 
   /** POST: add a new CPU Measure to the database */
-  addCPUMeasure(data: CpuUsageData): Observable<CpuUsageData> {
+  addCPUMeasure(data: CpuUsageData)/* : Observable<CpuUsageData> */ {
     console.log("POST DATA", data);
-    return this.http.post<CpuUsageData>('hhttp://localhost:4000/clientCPU/new', data, this.httpOptions)
+    return this.http.post/* <CpuUsageData> */('http://localhost:4000/clientCPU/new', data, this.httpOptions)
       .pipe(
         catchError(this.handleError)
-      );
+      )
+      .subscribe(measr => console.log(measr));
   }
 }
